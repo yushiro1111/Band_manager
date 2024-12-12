@@ -1,0 +1,20 @@
+<div class="container mt-5">
+  <h1 class="text-center">バンド一覧</h1>
+
+  <% if @bands.any? %>
+    <ul class="list-group mt-4">
+      <% @bands.each do |band| %>
+        <li class="list-group-item">
+          <strong><%= band.name %></strong><br>
+          リーダー: <%= band.leader.name if band.leader %><br>
+          ボーカル: <%= band.vocal %><br>
+          ギター: <%= band.guitar %><br>
+          ベース: <%= band.bass %><br>
+          ドラム: <%= band.drum %><br>
+        </li>
+      <% end %>
+    </ul>
+  <% else %>
+    <p class="text-center mt-4">現在、申請されたバンドはありません。</p>
+  <% end %>
+</div>
