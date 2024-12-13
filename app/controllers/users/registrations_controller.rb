@@ -6,6 +6,7 @@ class Users::RegistrationsController < Devise::RegistrationsController
     # サインアップ時に許可するパラメータを追加
     def configure_sign_up_params
       devise_parameter_sanitizer.permit(:sign_up, keys: [:name])
+      devise_parameter_sanitizer.permit(:account_update, keys: [:name])
     end
   end
   

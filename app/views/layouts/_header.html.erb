@@ -9,6 +9,7 @@
   <!-- 右側: サインアップとログイン -->
   <nav style="font-size: 1.2rem;">
     <% if user_signed_in? %>
+    <%= link_to "プロフィール編集", edit_user_registration_path, style: "color: white; text-decoration: none; margin-right: 20px;" %>
     <%= link_to "ログアウト", get_logout_path, style: "color: white; text-decoration: none; margin-right: 20px;" %>
 
     <% else %>
