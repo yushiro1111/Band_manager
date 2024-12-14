@@ -1,63 +1,39 @@
-<div class="d-flex justify-content-center align-items-center" style="min-height: 100vh; background-color: #f8f9fa;">
-  <div class="card shadow" style="width: 60rem; border-radius: 10px;">
-    <div class="card-header text-center" style="background-color: #007bff; color: white; border-radius: 10px;">
-      <h2 style="font-size: 2.5rem;">バンド申請フォーム</h2>
-    </div>
-    <div class="card-body">
-      <%= form_with model: @band, local: true, class: "needs-validation" do |f| %>
-        <!-- バンド名 -->
-        <div class="mb-4 text-center">
-          <%= f.label :name, "バンド名", class: "form-label", style: "font-size: 1.5rem;" %>
-          <%= f.text_field :name, class: "form-control form-control-lg mx-auto", placeholder: "バンド名を入力してください", required: true, style: "width: 80%; font-size: 1.5rem;" %>
-        </div>
+<h1><%= @event.name %> へのバンド申請</h1>
 
-        <!-- リーダー -->
-        <div class="mb-4 text-center">
-          <%= f.label :leader_id, "リーダー", class: "form-label", style: "font-size: 1.5rem;" %>
-          <%= f.collection_select :leader_id, User.all, :id, :name, prompt: "リーダーを選択してください", class: "form-select form-select-lg mx-auto", style: "width: 80%; font-size: 1.5rem;" %>
-        </div>
+<p>
+  開催日: <%= @event.date.strftime("%Y年%m月%d日 %H:%M") %><br>
+  場所: <%= @event.location %>
+</p>
 
-        <!-- ボーカル -->
-        <div class="mb-4 text-center">
-          <%= f.label :vocal, "ボーカル", class: "form-label", style: "font-size: 1.5rem;" %>
-          <%= f.text_field :vocal, class: "form-control form-control-lg mx-auto", placeholder: "ボーカルの名前を入力してください", style: "width: 80%; font-size: 1.5rem;" %>
-        </div>
+<%= form_with model: @band, url: bands_path, local: true do |f| %>
+  <%= f.hidden_field :event_id, value: @event.id %>
 
-        <!-- ギター -->
-        <div class="mb-4 text-center">
-          <%= f.label :guitar, "ギター", class: "form-label", style: "font-size: 1.5rem;" %>
-          <%= f.text_field :guitar, class: "form-control form-control-lg mx-auto", placeholder: "ギターの名前を入力してください", required: true, style: "width: 80%; font-size: 1.5rem;" %>
-        </div>
-
-        <!-- ギター2 -->
-        <div class="mb-4 text-center">
-          <%= f.label :guitar2, "ギター2 (任意)", class: "form-label", style: "font-size: 1.5rem;" %>
-          <%= f.text_field :guitar2, class: "form-control form-control-lg mx-auto", placeholder: "ギター2の名前を入力してください", style: "width: 80%; font-size: 1.5rem;" %>
-        </div>
-
-        <!-- ベース -->
-        <div class="mb-4 text-center">
-          <%= f.label :bass, "ベース", class: "form-label", style: "font-size: 1.5rem;" %>
-          <%= f.text_field :bass, class: "form-control form-control-lg mx-auto", placeholder: "ベースの名前を入力してください", required: true, style: "width: 80%; font-size: 1.5rem;" %>
-        </div>
-
-        <!-- ドラム -->
-        <div class="mb-4 text-center">
-          <%= f.label :drum, "ドラム", class: "form-label", style: "font-size: 1.5rem;" %>
-          <%= f.text_field :drum, class: "form-control form-control-lg mx-auto", placeholder: "ドラムの名前を入力してください", required: true, style: "width: 80%; font-size: 1.5rem;" %>
-        </div>
-
-        <!-- 注釈 -->
-        <div class="mb-4 text-center">
-          <%= f.label :notes, "注釈 (任意)", class: "form-label", style: "font-size: 1.5rem;" %>
-          <%= f.text_area :notes, rows: 4, class: "form-control form-control-lg mx-auto", placeholder: "必要に応じて注釈を入力してください", style: "width: 80%; font-size: 1.5rem;" %>
-        </div>
-
-        <!-- 提出ボタン -->
-        <div class="d-grid text-center">
-          <%= f.submit "申請", class: "btn btn-primary btn-lg mx-auto", style: "font-size: 1.8rem; width: 50%;" %>
-        </div>
-      <% end %>
-    </div>
+  <!-- 必須項目 -->
+  <div class="mb-3">
+    <%= f.label :name, "バンド名 (必須)" %>
+    <%= f.text_field :name, class: "form-control", required: true %>
   </div>
-</div>
+
+  <div class="mb-3">
+    <%= f.label :leader_id, "リーダー (必須)" %>
+    <%= f.select :leader_id, User.all.collect { |u| [u.name, u.id] }, { prompt: "リーダーを選択" }, class: "form-control", required: true %>
+  </div>
+
+  <!-- 各楽器担当者 -->
+  <% ["vocal", "guitar1", "guitar2", "bass", "drum", "keyboard"].each do |role| %>
+    <div class="mb-3">
+      <%= label_tag "band_members[#{role}]", role.capitalize %>
+      <%= select_tag "band_members[#{role}]", options_for_select(User.all.collect { |u| [u.name, u.id] }), prompt: "#{role.capitalize} を選択", class: "form-control" %>
+    </div>
+  <% end %>
+
+  <!-- 注釈 -->
+  <div class="mb-3">
+    <%= f.label :notes, "注釈" %>
+    <%= f.text_area :notes, class: "form-control" %>
+  </div>
+
+  <%= f.submit "申請する", class: "btn btn-primary" %>
+<% end %>
+
+<%= link_to "イベント一覧に戻る", events_path, class: "btn btn-secondary", style: "margin-top: 10px;" %>

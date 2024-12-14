@@ -1,0 +1,15 @@
+<h1>イベント一覧</h1>
+
+<ul>
+  <% @events.each do |event| %>
+    <li>
+      <!-- イベント詳細へのリンク -->
+      <strong><%= link_to event.name, event_path(event) %></strong><br>
+      開催日: <%= event.date.strftime("%Y年%m月%d日 %H:%M") %><br>
+      場所: <%= event.location %><br>
+
+      <!-- バンド申請へのリンク -->
+      <%= link_to "このイベントにバンドを申請する", new_band_path(event_id: event.id), class: "btn btn-secondary" %>
+    </li>
+  <% end %>
+</ul>

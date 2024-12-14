@@ -1,0 +1,7 @@
+<h1><%= @event.name %> のバンド申請</h1>
+
+<p>日時: <%= @event.date.strftime("%Y年%m月%d日 %H:%M") %></p>
+<p>場所: <%= @event.location %></p>
+
+<%= link_to "このイベントにバンドを申請する", new_band_path(event_id: @event.id), class: "btn btn-primary" %>
+<%= link_to "イベント一覧に戻る", events_path, class: "btn btn-secondary", style: "margin-left: 10px;" %>

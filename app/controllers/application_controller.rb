@@ -1,9 +1,11 @@
 class ApplicationController < ActionController::Base
-    def after_sign_in_path_for(resource)
-        if resource.admin?
-            admin_dashboard_path # 管理者はダッシュボードにリダイレクト
-        else
-          root_path # 一般ユーザーはホームページにリダイレクト
+    class ApplicationController < ActionController::Base
+        def after_sign_in_path_for(resource)
+            if resource.admin? # 管理者の場合
+              admin_dashboard_path
+            else
+              root_path # 一般ユーザーの場合
+            end
         end
     end
     

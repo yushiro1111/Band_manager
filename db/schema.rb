@@ -10,18 +10,40 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2024_12_12_073045) do
+ActiveRecord::Schema[7.0].define(version: 2024_12_14_035946) do
+  create_table "band_members", force: :cascade do |t|
+    t.integer "band_id", null: false
+    t.integer "user_id", null: false
+    t.string "role"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["band_id"], name: "index_band_members_on_band_id"
+    t.index ["user_id"], name: "index_band_members_on_user_id"
+  end
+
   create_table "bands", force: :cascade do |t|
     t.string "name", null: false
     t.integer "leader_id", null: false
     t.string "vocal"
-    t.string "guitar"
+    t.string "guitar1"
     t.string "guitar2"
     t.string "bass"
     t.string "drum"
     t.text "notes"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.integer "event_id", null: false
+    t.string "keyboard"
+  end
+
+  create_table "events", force: :cascade do |t|
+    t.string "name", null: false
+    t.datetime "date", precision: nil, null: false
+    t.string "location", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.boolean "published", default: false, null: false
+    t.integer "base_fee"
   end
 
   create_table "users", force: :cascade do |t|
@@ -37,5 +59,8 @@ ActiveRecord::Schema[7.0].define(version: 2024_12_12_073045) do
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
   end
 
+  add_foreign_key "band_members", "bands"
+  add_foreign_key "band_members", "users"
+  add_foreign_key "bands", "events"
   add_foreign_key "bands", "users", column: "leader_id"
 end

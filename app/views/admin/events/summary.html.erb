@@ -1,0 +1,37 @@
+<h1><%= @event.name %> の集計</h1>
+
+<p>
+  <strong>開催日:</strong> <%= @event.date.strftime("%Y年%m月%d日 %H:%M") %><br>
+  <strong>場所:</strong> <%= @event.location %><br>
+  <strong>基本出演料:</strong> <%= "#{@event.base_fee} 円" %><br>
+</p>
+
+<h2>集計結果</h2>
+
+<% if @participant_data.any? %>
+  <table>
+    <thead>
+      <tr>
+        <th>名前</th>
+        <th>出演回数</th>
+        <th>出演料</th>
+      </tr>
+    </thead>
+    <tbody>
+      <% @participant_data.each do |data| %>
+        <tr>
+          <td><%= data[:name] %></td>
+          <td><%= data[:appearances] %> 回</td>
+          <td><%= "#{data[:fee]} 円" %></td>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
+<% else %>
+  <p>現在、集計するデータがありません。</p>
+<% end %>
+
+<p><strong>総出演者数:</strong> <%= @participant_count %> 人</p>
+<p><strong>総出演料:</strong> <%= "#{@total_fee} 円" %></p>
+
+<%= link_to "イベント一覧に戻る", admin_events_path, class: "btn btn-secondary", style: "margin-top: 10px;" %>

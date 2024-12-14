@@ -1,0 +1,27 @@
+<%= form_with model: event, url: url_for([:admin, event]), local: true do |f| %>
+    <div class="mb-3">
+      <%= f.label :name, "イベント名" %>
+      <%= f.text_field :name, class: "form-control" %>
+    </div>
+    <div class="mb-3">
+      <%= f.label :published, "公開する" %>
+      <%= f.check_box :published, class: "form-check-input" %>
+    </div>
+
+    <div class="mb-3">
+      <%= f.label :base_fee, "基本出演料（円）" %>
+      <%= f.number_field :base_fee, class: "form-control", required: true, min: 0, step: 100 %>
+    </div>
+
+
+    <div class="mb-3">
+      <%= f.label :date, "日時" %>
+      <%= f.datetime_select :date, class: "form-control" %>
+    </div>
+    <div class="mb-3">
+      <%= f.label :location, "場所" %>
+      <%= f.text_field :location, class: "form-control" %>
+    </div>
+    <%= f.submit class: "btn btn-primary" %>
+  <% end %>
+  
